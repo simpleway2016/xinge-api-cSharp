@@ -144,7 +144,7 @@ namespace XingeApp
             if (m_type == (XGPushConstants.OrdinaryMessage) || m_type != "1")
             {
                 if (!m_style.isValid()) return false;
-                if (!m_action.isValid()) return false;
+                if (m_action != null && !m_action.isValid()) return false;
             }
             if (m_expireTime < 0 || m_expireTime > 3 * 24 * 60 * 60)
                 return false;
@@ -184,7 +184,8 @@ namespace XingeApp
                 message.Add("icon_res", m_style.getIconRes());
                 message.Add("style_id", m_style.getStyleId());
                 message.Add("small_icon", m_style.getSmallIcon());
-                message.Add("action", m_action.toJson());
+                if(m_action != null)
+                    message.Add("action", m_action.toJson());
             }
             else if(m_type.Equals(XGPushConstants.SilentMessage))
             {
