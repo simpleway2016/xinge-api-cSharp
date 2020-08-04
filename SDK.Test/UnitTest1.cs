@@ -6,7 +6,46 @@ namespace SDK.Test
 {
     public class UnitTest1
     {
-         [Fact]
+
+        [Fact]
+        public void JackTestToken()
+        {
+            string result = null;
+            int messageIndex = Convert.ToInt32((DateTime.Now - new DateTime(1970, 1, 1)).TotalSeconds);
+
+            var appID = "4c1723a2b00a8";
+            var accessID = 2100316995;
+            var secretKey = "ed911cc8d3e9d1472c41968fea86c99c";
+            var token = "931464a16ad1144a4c9c8cc5ca58548ed365e24f";//小米
+            token = "2de820afa4853e70c735c3e1325a07b430110375";//华为
+            //token = "094983a3ee98a0f7e27355326b83174aad9f3254";//vivo
+            //token = "205445ada5b50439419190658ea650e0f8895543";//魅族
+
+            Message message = new Message();
+            message.setType("notify");
+            message.setStyle(new Style(0, 1, 1, 1, messageIndex));
+            message.setTitle("title" + messageIndex);
+            message.setSendTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            message.setContent("content" + messageIndex);
+            message.setCustom(new Dictionary<string, object>() {
+                { "custom_content",new Dictionary<string, object>() {
+                { "title","title" + messageIndex},
+                 { "body","content" + messageIndex},
+                  { "custom","abc"},
+            }}
+            });
+
+
+            //必须把action设置为null，否则小米无法接收点击事件
+            message.setAction(null);
+
+            XingeApp.XingeApp xinge = new XingeApp.XingeApp(appID, accessID, secretKey);
+            string ret = xinge.PushSingleDevice(token, message);
+
+        }
+
+
+        [Fact]
         public void TestPushTokenOfiOS()
         {
             string result = null;
